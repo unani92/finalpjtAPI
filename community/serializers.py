@@ -11,7 +11,7 @@ class MovieSerializer(serializers.ModelSerializer):
     genres = GenreSerializer(many=True)
     class Meta:
         model = Movie
-        fields = '__all__'
+        fields = ['genres', 'title', 'overview', 'poster_path', 'release_date', 'popularity', 'vote_count', 'vote_average', 'adult']
 
 class CommentSerializer(serializers.Serializer):
     user = UserSerializer(required=False)
@@ -19,7 +19,7 @@ class CommentSerializer(serializers.Serializer):
         model = Comment
         fields = ['id', 'content', 'created_at', ]
 
-class ArticleListSerializer(serializers.Serializer):
+class ArticleListSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     movie = MovieSerializer()
     like_users = UserSerializer(many=True)
@@ -33,3 +33,8 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ['title', 'content', 'rank', 'user', 'movie']
+
+class MovieArticleSerializer(MovieSerializer):
+    articles = ArticleSerializer(many=True)
+    class Meta(MovieSerializer.Meta):
+        fields = MovieSerializer.Meta.fields + ['articles']
