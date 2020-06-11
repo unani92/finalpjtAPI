@@ -3,10 +3,6 @@
 ## Description
 영화 커뮤니티 백앤드 API 백앤드 서버입니다. 
 
-```commandline
-
-```
-
 ## Movie Data Crolling
 
 > [The Movie DB API]() 에서 영화 데이터를 가져와 .json 파일을 생성했습니다.
@@ -46,3 +42,5 @@ $ python manage.py loaddata data/moviedata.json
 
 ## Model
 ![KakaoTalk_Photo_2020-06-11-16-11-17](https://user-images.githubusercontent.com/53211781/84362975-03ffcb80-ac09-11ea-92cd-13c5ee787be9.png)
+
+## API Guide
