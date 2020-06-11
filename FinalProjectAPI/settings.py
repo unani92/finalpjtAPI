@@ -19,6 +19,9 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    # app
+    'community',
+    'accounts',
 
     # rest framework
     'rest_framework',
@@ -132,3 +135,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+
+AUTH_USER_MODEL = 'accounts.User'
