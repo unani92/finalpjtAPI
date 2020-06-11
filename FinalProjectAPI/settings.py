@@ -19,10 +19,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    # app
-    'community',
-    'accounts',
-
     # rest framework
     'rest_framework',
     'rest_framework.authtoken',
@@ -43,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
+    # my app
+    'community',
+    'accounts',
 ]
 
 MIDDLEWARE = [
