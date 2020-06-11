@@ -13,7 +13,7 @@ for page in range(1, 6):
 
     for movie in movies:
         inner = dict()
-        inner["model"] = "movies.movie"
+        inner["model"] = "community.movie"
         inner["pk"] = movie["id"]
 
         fields = dict()

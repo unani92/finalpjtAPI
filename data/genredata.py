@@ -9,7 +9,7 @@ genres = res['genres']
 
 for genre in genres:
     inner = dict()
-    inner["model"] = "movies.genre"
+    inner["model"] = "community.genre"
     inner["pk"] = genre["id"]
 
     fields = dict()
