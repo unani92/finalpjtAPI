@@ -27,10 +27,9 @@ class ArticleListSerializer(serializers.Serializer):
         model = Article
         fields = '__all__'
 
-class ArticleSerializer(serializers.Serializer):
+class ArticleSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=False)
     movie = MovieSerializer(required=False)
-    like_users = UserSerializer(many=True)
     class Meta:
         model = Article
-        fields = '__all__'
+        fields = ['title', 'content', 'rank', 'user', 'movie']
