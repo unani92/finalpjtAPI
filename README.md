@@ -3,10 +3,6 @@
 ## Description
 영화 커뮤니티 백앤드 API 백앤드 서버입니다. 
 
-```commandline
-
-```
-
 ## Movie Data Crolling
 
 > [The Movie DB API]() 에서 영화 데이터를 가져와 .json 파일을 생성했습니다.
@@ -46,3 +42,16 @@ $ python manage.py loaddata data/moviedata.json
 
 ## Model
 ![KakaoTalk_Photo_2020-06-11-16-11-17](https://user-images.githubusercontent.com/53211781/84362975-03ffcb80-ac09-11ea-92cd-13c5ee787be9.png)
+
+## API Guide
+### 1. 전체 영화 조회하기 `GET` `/api/v1/movies/`
+> id(영화 고유 personal key), genre, title, overview, poster_url, release_date
+> 
+
+### 2. 개별 영화 조회하기 `GET` `/api/v1/movies/<int:movie_pk>/`
+
+### 3. 개별 아티클 조회하기 `GET` `/api/v1/articles/<int:article_pk>/`
+
+### 4. 개별 아티클 생성하기 `POST` `/api/v1/articles/<int:movie_pk>/`
+
+### 5. 댓글 작성하기 `POST` `/api/v1/articles/<int:article_pk>/comments/`
