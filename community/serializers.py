@@ -27,7 +27,7 @@ class ArticleRelatedMovieSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=False)
     class Meta:
         model = Article
-        fields = ['id' ,'user', 'title', 'content', 'rank', 'created_at', 'updated_at']
+        fields = ['id' ,'user', 'title', 'content', 'rank', 'updated_at']
 
 # 모든 영화 조회하기
 class MovieArticleSerializer(MovieSerializer):
@@ -50,9 +50,15 @@ class CommentsRelatedArticleSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'content', 'created_at', ]
 
 # 개별 게시글 조회하기
+class MovieRelatedArticleSerializer(serializers.ModelSerializer):
+    genres = GenreSerializer(many=True)
+    class Meta:
+        model = Movie
+        fields = ['id', 'genres', 'title', 'popularity', 'vote_count', 'vote_average', 'adult']
+
 class ArticleListSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-    movie = MovieSerializer()
+    movie = MovieRelatedArticleSerializer()
     comments = CommentsRelatedArticleSerializer(many=True)
     like_users = UserSerializer(many=True)
     class Meta:

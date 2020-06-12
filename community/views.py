@@ -13,6 +13,12 @@ def index(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def movie_best3(request):
+    movies = Movie.objects.order_by('-vote_average')[:3]
+    serializer = MovieArticleSerializer(movies,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def moviedetail(request,movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = MovieArticleSerializer(movie)
