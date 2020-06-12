@@ -1,9 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes, APIView
+from rest_framework.decorators import permission_classes, APIView
 from rest_framework.permissions import IsAuthenticated
-from .serializers import MovieArticleSerializer, GenreSerializer, ArticleSerializer, ArticleListSerializer, CommentSerializer
-from .models import Movie, Genre, Article
+from .serializers import MovieArticleSerializer, ArticleSerializer, ArticleListSerializer, CommentSerializer
+from .models import Movie, Article, Comment
 # Create your views here.
 
 class MovieList(APIView):
@@ -25,6 +25,11 @@ class MovieDetail(APIView):
         return Response(serializer.data)
 
 class ArticleList(APIView):
+    def get(self, request, pk):
+        article = get_object_or_404(Article, pk=pk)
+        serializer = ArticleListSerializer(article)
+        return Response(serializer.data)
+
     @permission_classes([IsAuthenticated])
     def post(self, request, pk):
         movie = get_object_or_404(Movie, pk=pk)
@@ -36,16 +41,38 @@ class ArticleList(APIView):
             print(serializer.data)
             return Response({"msg": "error"})
 
-    def get(self, request, pk):
+    @permission_classes([IsAuthenticated])
+    def put(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
-        serializer = ArticleListSerializer(article)
-        return Response(serializer.data)
+        serializer = ArticleSerializer(article, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        else :
+            return Response({"msg":"error"})
+
+    @permission_classes([IsAuthenticated])
+    def delete(self, request, pk):
+        article = get_object_or_404(Article, pk=pk)
+        article.delete()
+        return Response({"msg":"deleted"})
 
 class CommentList(APIView):
+    def get(self, request, pk):
+        comment = get_object_or_404(Comment, pk=pk)
+        serializer = CommentSerializer(comment)
+        return Response(serializer.data)
+
     @permission_classes([IsAuthenticated])
-    def post(self, request, article_pk):
-        article = get_object_or_404(Article, pk=article_pk)
+    def post(self, request, pk):
+        article = get_object_or_404(Article, pk=pk)
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user, article=article)
             return Response(serializer.data)
+
+    @permission_classes([IsAuthenticated])
+    def delete(self, request, pk):
+        comment = get_object_or_404(Comment, pk=pk)
+        comment.delete()
+        return Response({"msg":"deleted"})
