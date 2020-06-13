@@ -15,10 +15,22 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_query_param = 'page'
 
 # all movies, specific movie view
-class MovieListPaginate(ListAPIView):
-    queryset = Movie.objects.all()
-    serializer_class = MovieArticleSerializer
-    pagination_class = StandardResultsSetPagination
+class MovieListPaginate(APIView):
+
+    def get(self, request):
+        paginator = StandardResultsSetPagination()
+        if request.GET.get('orderBy'):
+            orderBy = request.GET.get('orderBy')
+            movies = Movie.objects.order_by(orderBy)
+        elif request.GET.get('q'):
+            q = request.GET.get('q')
+            movies = Movie.objects.filter(title__contains=q)
+        else :
+            return Response({"message": "no result"})
+
+        result_page = paginator.paginate_queryset(movies,request)
+        serializer = MovieArticleSerializer(result_page, many=True)
+        return Response(serializer.data)
 
 class MovieBest3(APIView):
     def get(self, request):
