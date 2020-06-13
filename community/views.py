@@ -4,13 +4,18 @@ from rest_framework.decorators import permission_classes, APIView
 from rest_framework.permissions import IsAuthenticated
 from .serializers import MovieArticleSerializer, ArticleSerializer, ArticleListSerializer, CommentSerializer
 from .models import Movie, Article, Comment
+from rest_framework.generics import ListAPIView
+from rest_framework.pagination import PageNumberPagination
 # Create your views here.
 
-class MovieList(APIView):
-    def get(self, request):
-        movies = Movie.objects.all()
-        serializer = MovieArticleSerializer(movies,many=True)
-        return Response(serializer.data)
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_query_param = 'page'
+
+class MovieListPaginate(ListAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieArticleSerializer
+    pagination_class = StandardResultsSetPagination
 
 class MovieBest3(APIView):
     def get(self, request):
