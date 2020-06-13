@@ -19,7 +19,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'secondproject',
     # rest framework
     'rest_framework',
     'rest_framework.authtoken',
