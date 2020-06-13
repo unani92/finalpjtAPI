@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.db.models import Count
 from rest_framework.response import Response
 from rest_framework.decorators import permission_classes, APIView
 from rest_framework.permissions import IsAuthenticated
@@ -8,10 +9,12 @@ from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
 # Create your views here.
 
+# pagination config default class
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
     page_query_param = 'page'
 
+# all movies, specific movie view
 class MovieListPaginate(ListAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieArticleSerializer
@@ -29,10 +32,23 @@ class MovieDetail(APIView):
         serializer = MovieArticleSerializer(movie)
         return Response(serializer.data)
 
-class ArticleList(APIView):
+# all articles, specific article CRUD
+class ArticleList(ListAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleListSerializer
+    pagination_class = StandardResultsSetPagination
+
+class ArticleBest3(APIView):
+    def get(self,request):
+        articles = Article.objects.annotate(count=Count('like_users')).order_by('-count')[:3]
+        serializer = ArticleListSerializer(articles, many=True)
+        return Response(serializer.data)
+
+
+class ArticleDetail(APIView):
     def get(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
-        serializer = ArticleListSerializer(article)
+        serializer = ArticleSerializer(article)
         return Response(serializer.data)
 
     @permission_classes([IsAuthenticated])
@@ -62,6 +78,7 @@ class ArticleList(APIView):
         article.delete()
         return Response({"msg":"deleted"})
 
+# all comments, specific comment CRD
 class CommentList(APIView):
     def get(self, request, pk):
         comment = get_object_or_404(Comment, pk=pk)
