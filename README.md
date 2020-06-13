@@ -44,14 +44,18 @@ $ python manage.py loaddata data/moviedata.json
 ![KakaoTalk_Photo_2020-06-11-16-11-17](https://user-images.githubusercontent.com/53211781/84362975-03ffcb80-ac09-11ea-92cd-13c5ee787be9.png)
 
 ## API Guide
-### 1. 전체 영화 조회하기 `GET` `/api/v1/movies/`
+### 1. 전체 영화 조회하기 `GET` `/api/v1/community/movies/`
 > id(영화 고유 personal key), genre, title, overview, poster_url, release_date
 > 
 
-### 2. 개별 영화 조회하기 `GET` `/api/v1/movies/<int:movie_pk>/`
+### 2. 개별 영화 조회하기 `GET` `/api/v1/community/movies/<int:movie_pk>/`
 
-### 3. 개별 아티클 조회하기 `GET` `/api/v1/articles/<int:article_pk>/`
+### 3. 개별 아티클 조회하기 `GET` `/api/v1/community/articles/<int:article_pk>/`
 
-### 4. 개별 아티클 생성하기 `POST` `/api/v1/articles/<int:movie_pk>/`
+### 4. 개별 아티클 생성하기 `POST` `/api/v1/community/articles/<int:movie_pk>/`
 
-### 5. 댓글 작성하기 `POST` `/api/v1/articles/<int:article_pk>/comments/`
+### 5. 댓글 작성하기 `POST` `/api/v1/community/articles/<int:article_pk>/comments/`
+
+### 6. 전체 회원정보 조회하기 `GET` `/api/v1/accounts/`
+
+### 7. 개별 회원정보 조회하기 `GET` `/api/v1/accounts/<int:user_pk>/`
