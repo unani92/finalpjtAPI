@@ -24,7 +24,7 @@ class MovieListPaginate(APIView):
             movies = Movie.objects.order_by(orderBy)
         elif request.GET.get('q'):
             q = request.GET.get('q')
-            movies = Movie.objects.filter(title__contains=q)
+            movies = Movie.objects.filter(title__icontains=q)
         else :
             return Response({"message": "no result"})
 
