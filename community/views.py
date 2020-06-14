@@ -25,6 +25,8 @@ class MovieListPaginate(APIView):
         elif request.GET.get('q'):
             q = request.GET.get('q')
             movies = Movie.objects.filter(title__icontains=q)
+            serializer = MovieArticleSerializer(movies, many=True)
+            return Response(serializer.data)
         else :
             return Response({"message": "no result"})
 
