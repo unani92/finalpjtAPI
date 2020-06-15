@@ -20,3 +20,10 @@ class UserArticleDetail(APIView):
         user = get_object_or_404(User, pk=pk)
         serializers = UserArticleSerializer(user)
         return Response(serializers.data)
+
+class RequestUserDetail(APIView):
+    @permission_classes([IsAuthenticated])
+    def get(self,request):
+        user = request.user
+        serializer = UserArticleSerializer(user)
+        return Response(serializer.data)

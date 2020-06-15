@@ -56,6 +56,6 @@ $ python manage.py loaddata data/moviedata.json
 
 ### 5. 댓글 작성하기 `POST` `/api/v1/community/articles/<int:article_pk>/comments/`
 
-### 6. 전체 회원정보 조회하기 `GET` `/api/v1/accounts/`
+### 6. 로그인 회원정보 조회하기 `GET` `/api/v1/accounts/`
 
 ### 7. 개별 회원정보 조회하기 `GET` `/api/v1/accounts/<int:user_pk>/`
