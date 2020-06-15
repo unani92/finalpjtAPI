@@ -61,7 +61,7 @@ class MovieRecommend(APIView):
                 for genre in genres:
                     gnr_cnt[genre.pk] = gnr_cnt.get(genre.pk, 0) + 1
             fav_gnr = sorted(gnr_cnt.items(), key=lambda x:x[1], reverse=True)[0][0]
-            movies = list(Movie.objects.filter(genres=fav_gnr).exclude(like_users=request.user).order_by('-vote_average'))[:10]
+            movies = list(Movie.objects.filter(genres=fav_gnr).all())
         else:
             movies = list(Movie.objects.filter(vote_average__gte=8).all())
         movie = choice(movies)
