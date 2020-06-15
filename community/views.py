@@ -34,9 +34,9 @@ class MovieListPaginate(APIView):
         serializer = MovieArticleSerializer(result_page, many=True)
         return Response(serializer.data)
 
-class MovieBest3(APIView):
+class MovieBest2(APIView):
     def get(self, request):
-        movies = Movie.objects.order_by('-popularity')[:3]
+        movies = Movie.objects.order_by('-popularity')[:2]
         serializer = MovieArticleSerializer(movies, many=True)
         return Response(serializer.data)
 
@@ -52,9 +52,9 @@ class ArticleList(ListAPIView):
     serializer_class = ArticleListSerializer
     pagination_class = StandardResultsSetPagination
 
-class ArticleBest3(APIView):
+class ArticleBest2(APIView):
     def get(self,request):
-        articles = Article.objects.annotate(count=Count('like_users')).order_by('-count')[:3]
+        articles = Article.objects.annotate(count=Count('like_users')).order_by('-count')[:2]
         serializer = ArticleListSerializer(articles, many=True)
         return Response(serializer.data)
 

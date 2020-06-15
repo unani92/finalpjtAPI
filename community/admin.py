@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(Movie)
 admin.site.register(Genre)
 admin.site.register(Article)
+admin.site.register(Comment)
