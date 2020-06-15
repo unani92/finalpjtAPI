@@ -7,7 +7,7 @@ class RankCalculate:
         vote_count = self.query.vote_count
         vote_avg = self.query.vote_average
         total = vote_count * vote_avg
-        self.query.vote_average = round((total + self.request.data['rank']) / (vote_count + 1), 1)
+        self.query.vote_average = round((total + int(self.request.data['rank'])) / (vote_count + 1), 1)
         self.query.vote_count = vote_count + 1
         self.query.save()
 
@@ -16,7 +16,7 @@ class RankCalculate:
         vote_count = movie.vote_count
         vote_avg = movie.vote_average
         total = vote_count * vote_avg
-        movie.vote_average = round((total - prev_rank + self.request.data['rank']) / vote_count, 1)
+        movie.vote_average = round((total - int(prev_rank) + int(self.request.data['rank'])) / vote_count, 1)
         movie.save()
 
     def DeleteRank(self,prev_rank):
@@ -24,6 +24,6 @@ class RankCalculate:
         vote_count = movie.vote_count
         vote_avg = movie.vote_average
         total = vote_count * vote_avg
-        movie.vote_average = round((total - prev_rank) / (vote_count - 1), 1)
+        movie.vote_average = round((total - int(prev_rank)) / (vote_count - 1), 1)
         movie.vote_count -= 1
         movie.save()
