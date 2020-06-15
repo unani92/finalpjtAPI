@@ -20,7 +20,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     movie = MovieSerializer(required=False)
     class Meta:
         model = Article
-        fields = ['movie', 'user', 'title', 'content', 'rank', ]
+        fields = ['id','movie', 'user', 'title', 'content', 'rank', ]
 
 # 영화정보 및 영화에 달린 게시글
 class ArticleRelatedMovieSerializer(serializers.ModelSerializer):
