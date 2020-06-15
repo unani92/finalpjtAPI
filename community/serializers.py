@@ -29,11 +29,7 @@ class ArticleRelatedMovieSerializer(serializers.ModelSerializer):
         model = Article
         fields = ['id' ,'user', 'title', 'content', 'rank', 'updated_at']
 
-# 모든 영화 조회하기
-class MovieArticleSerializer(MovieSerializer):
-    articles = ArticleRelatedMovieSerializer(many=True)
-    class Meta(MovieSerializer.Meta):
-        fields = MovieSerializer.Meta.fields + ['articles']
+
 
 # 댓글 작성
 class CommentSerializer(serializers.ModelSerializer):
@@ -65,3 +61,8 @@ class ArticleListSerializer(serializers.ModelSerializer):
         model = Article
         fields = ['id', 'movie', 'user', 'title', 'content', 'rank', 'created_at', 'updated_at', 'like_users', 'comments']
 
+# 모든 영화 조회하기
+class MovieArticleSerializer(MovieSerializer):
+    articles = ArticleListSerializer(many=True)
+    class Meta(MovieSerializer.Meta):
+        fields = MovieSerializer.Meta.fields + ['articles']

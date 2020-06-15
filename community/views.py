@@ -8,7 +8,9 @@ from .serializers import MovieArticleSerializer, ArticleSerializer, ArticleListS
 from .models import Movie, Article, Comment
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
+from .rankcalculate import RankCalculate
 # Create your views here.
+
 
 # pagination config default class
 class StandardResultsSetPagination(PageNumberPagination):
@@ -73,7 +75,7 @@ class ArticleList(ListAPIView):
 
 class ArticleBest2(APIView):
     def get(self,request):
-        articles = Article.objects.annotate(count=Count('like_users')).order_by('-count')[:2]
+        articles = Article.objects.annotate(count=Count('like_users')).order_by('-count')[:3]
         serializer = ArticleListSerializer(articles, many=True)
         return Response(serializer.data)
 
@@ -88,8 +90,13 @@ class ArticleDetail(APIView):
     def post(self, request, pk):
         movie = get_object_or_404(Movie, pk=pk)
         serializer = ArticleSerializer(data=request.data)
+
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user, movie=movie)
+
+            new_rank = RankCalculate(movie,request)
+            new_rank.AddNewRank()
+
             return Response(serializer.data)
         else:
             print(serializer.data)
@@ -98,9 +105,14 @@ class ArticleDetail(APIView):
     @permission_classes([IsAuthenticated])
     def put(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
+        prev_rank = article.rank
         serializer = ArticleSerializer(article, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
+
+            new_rank = RankCalculate(article,request)
+            new_rank.UpdateNewRank(prev_rank)
+
             return Response(serializer.data)
         else :
             return Response({"msg":"error"})
@@ -108,6 +120,11 @@ class ArticleDetail(APIView):
     @permission_classes([IsAuthenticated])
     def delete(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
+        prev_rank = article.rank
+
+        new_rank = RankCalculate(article,request)
+        new_rank.DeleteRank(prev_rank)
+
         article.delete()
         return Response({"msg":"deleted"})
 
