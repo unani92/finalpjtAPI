@@ -6,7 +6,7 @@ urlpatterns = [
     path('movies/recommend/', views.MovieRecommend.as_view()), # 추천
     path('movies/<int:movie_pk>/', views.MovieDetail.as_view()), # 개별 영화 조회하기
     path('articles/', views.ArticleList.as_view()), # 모든 아티클 조회하기
-    path('articles/home/', views.ArticleBest3.as_view()),
+    path('articles/home/', views.ArticleBest2.as_view()),
     path('articles/<int:pk>/', views.ArticleDetail.as_view()), # 개별 아티클 조회하기 및 생성하기
     path('articles/<int:pk>/comments/', views.CommentList.as_view()) # 댓글 작성하기, 삭제하기
 ]
