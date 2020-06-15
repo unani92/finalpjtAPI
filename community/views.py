@@ -52,10 +52,11 @@ class MovieDetail(APIView):
 class MovieRecommend(APIView):
     @permission_classes([IsAuthenticated])
     def get(self, request):
-        if request.user.like_movies.all():
+        if request.user.articles.all():
             gnr_cnt = dict()
-            movies = request.user.like_movies.all()
-            for movie in movies:
+            articles = request.user.articles.all()
+            for article in articles:
+                movie = article.movie
                 genres = movie.genres.all()
                 for genre in genres:
                     gnr_cnt[genre.pk] = gnr_cnt.get(genre.pk, 0) + 1
@@ -73,7 +74,7 @@ class ArticleList(ListAPIView):
     serializer_class = ArticleListSerializer
     pagination_class = StandardResultsSetPagination
 
-class ArticleBest2(APIView):
+class ArticleBest3(APIView):
     def get(self,request):
         articles = Article.objects.annotate(count=Count('like_users')).order_by('-count')[:3]
         serializer = ArticleListSerializer(articles, many=True)
