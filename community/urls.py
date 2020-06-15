@@ -3,6 +3,7 @@ from . import views
 urlpatterns = [
     path('movies/', views.MovieListPaginate.as_view()), # 모든 영화 조회하기
     path('movies/home/', views.MovieBest3.as_view()), # 영화 3개 보여주기
+    path('movies/recommend/', views.MovieRecommend.as_view()), # 추천
     path('movies/<int:movie_pk>/', views.MovieDetail.as_view()), # 개별 영화 조회하기
     path('articles/', views.ArticleList.as_view()), # 모든 아티클 조회하기
     path('articles/home/', views.ArticleBest3.as_view()),

@@ -1,3 +1,4 @@
+from random import choice
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
 from rest_framework.response import Response
@@ -43,6 +44,24 @@ class MovieBest3(APIView):
 class MovieDetail(APIView):
     def get(self, request, movie_pk):
         movie = get_object_or_404(Movie, pk=movie_pk)
+        serializer = MovieArticleSerializer(movie)
+        return Response(serializer.data)
+
+class MovieRecommend(APIView):
+    @permission_classes([IsAuthenticated])
+    def get(self, request):
+        if request.user.like_movies.all():
+            gnr_cnt = dict()
+            movies = request.user.like_movies.all()
+            for movie in movies:
+                genres = movie.genres.all()
+                for genre in genres:
+                    gnr_cnt[genre.pk] = gnr_cnt.get(genre.pk, 0) + 1
+            fav_gnr = sorted(gnr_cnt.items(), key=lambda x:x[1], reverse=True)[0][0]
+            movies = list(Movie.objects.filter(genres=fav_gnr).exclude(like_users=request.user).order_by('-vote_average'))[:10]
+        else:
+            movies = list(Movie.objects.filter(vote_average__gte=8).all())
+        movie = choice(movies)
         serializer = MovieArticleSerializer(movie)
         return Response(serializer.data)
 
