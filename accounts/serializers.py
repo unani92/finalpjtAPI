@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from community.models import Article, Movie
+from community.models import Article, Movie, Genre, Comment
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -8,21 +8,37 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id','username','age']
 
-class MovieSerializer(serializers.ModelSerializer):
-    # genres = GenreSerializer(many=True)
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = '__all__'
+
+class MovieRelatedArticleSerializer(serializers.ModelSerializer):
+    genres = GenreSerializer(many=True)
     class Meta:
         model = Movie
-        fields = ['id', 'genres', 'title', 'overview', 'poster_path', 'release_date', 'popularity', 'vote_count', 'vote_average', 'adult']
+        fields = ['id', 'genres', 'title', 'popularity', 'vote_count', 'vote_average', 'adult']
 
-class ArticleSerializer(serializers.ModelSerializer):
-    movie = MovieSerializer()
+class CommentsRelatedArticleSerializer(serializers.ModelSerializer):
+    user = UserSerializer(required=False)
+    class Meta:
+        model = Comment
+        fields = ['id', 'user', 'content', 'created_at', ]
+
+class ArticleListSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    movie = MovieRelatedArticleSerializer()
+    comments = CommentsRelatedArticleSerializer(many=True)
+    like_users = UserSerializer(many=True)
     class Meta:
         model = Article
-        fields = ['id', 'movie', 'title', 'content', 'updated_at']
+        fields = ['id', 'movie', 'user', 'title', 'content', 'rank', 'created_at', 'updated_at', 'like_users', 'comments']
+
 
 class UserArticleSerializer(UserSerializer):
-    articles = ArticleSerializer(many=True)
-    like_articles = ArticleSerializer(many=True)
+    articles = ArticleListSerializer(many=True)
+    like_articles = ArticleListSerializer(many=True)
+    comments = CommentsRelatedArticleSerializer(many=True)
     class Meta(UserSerializer.Meta):
-        fields = UserSerializer.Meta.fields + ['articles', 'like_articles']
+        fields = UserSerializer.Meta.fields + ['articles', 'like_articles', 'comments']
 
