@@ -40,7 +40,7 @@ class Article(models.Model):
     )
     like_users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name='like_articles'
+        related_name='like_articles',
     )
 
 class Comment(models.Model):

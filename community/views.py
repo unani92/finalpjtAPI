@@ -84,7 +84,7 @@ class ArticleBest3(APIView):
 class ArticleDetail(APIView):
     def get(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
-        serializer = ArticleSerializer(article)
+        serializer = ArticleListSerializer(article)
         return Response(serializer.data)
 
     @permission_classes([IsAuthenticated])
