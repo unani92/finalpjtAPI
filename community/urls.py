@@ -8,5 +8,6 @@ urlpatterns = [
     path('articles/', views.ArticleList.as_view()), # 모든 아티클 조회하기
     path('articles/home/', views.ArticleBest3.as_view()),
     path('articles/<int:pk>/', views.ArticleDetail.as_view()), # 개별 아티클 조회하기 및 생성하기
-    path('articles/<int:pk>/comments/', views.CommentList.as_view()) # 댓글 작성하기, 삭제하기
+    path('articles/<int:pk>/comments/', views.CommentList.as_view()),# 댓글 작성하기, 삭제하기
+    path('articles/<int:pk>/likes/', views.Like.as_view()),
 ]

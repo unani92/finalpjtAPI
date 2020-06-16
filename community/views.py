@@ -149,3 +149,21 @@ class CommentList(APIView):
         comment = get_object_or_404(Comment, pk=pk)
         comment.delete()
         return Response({"msg":"deleted"})
+
+class Like(APIView):
+    def get(self, request, pk):
+        user = request.user
+        article = get_object_or_404(Article, pk=pk)
+
+        if user in article.like_users.all():
+            article.like_users.remove(user)
+            liked = False
+        else :
+            article.like_users.add(user)
+            liked = True
+
+        return Response({
+            "liked": liked,
+            "count": article.like_users.count()
+        })
+
