@@ -69,10 +69,11 @@ class MovieRecommend(APIView):
         return Response(serializer.data)
 
 # all articles, specific article CRUD
-class ArticleList(ListAPIView):
-    queryset = Article.objects.all()
-    serializer_class = ArticleListSerializer
-    pagination_class = StandardResultsSetPagination
+class ArticleList(APIView):
+    def get(self,request):
+        articles = Article.objects.order_by('-pk')
+        serializer = ArticleListSerializer(articles, many=True)
+        return Response(serializer.data)
 
 class ArticleBest3(APIView):
     def get(self,request):
