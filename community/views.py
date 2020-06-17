@@ -107,28 +107,36 @@ class ArticleDetail(APIView):
     @permission_classes([IsAuthenticated])
     def put(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
-        prev_rank = article.rank
-        serializer = ArticleSerializer(article, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
 
-            new_rank = RankCalculate(article,request)
-            new_rank.UpdateNewRank(prev_rank)
+        if request.user == article.user:
+            prev_rank = article.rank
+            serializer = ArticleSerializer(article, data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
 
-            return Response(serializer.data)
+                new_rank = RankCalculate(article,request)
+                new_rank.UpdateNewRank(prev_rank)
+
+                return Response(serializer.data)
+            else :
+                return Response({"msg":"error"})
         else :
-            return Response({"msg":"error"})
+            return Response({"msg":"401 unAuthorized 잘못된 접근입니다."})
 
     @permission_classes([IsAuthenticated])
     def delete(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
-        prev_rank = article.rank
 
-        new_rank = RankCalculate(article,request)
-        new_rank.DeleteRank(prev_rank)
+        if request.user == article.user:
+            prev_rank = article.rank
 
-        article.delete()
-        return Response({"msg":"deleted"})
+            new_rank = RankCalculate(article,request)
+            new_rank.DeleteRank(prev_rank)
+
+            article.delete()
+            return Response({"msg":"deleted"})
+        else :
+            return Response({"msg": "401 unAuthorized 잘못된 접근입니다."})
 
 # all comments, specific comment CRD
 class CommentList(APIView):
@@ -148,8 +156,11 @@ class CommentList(APIView):
     @permission_classes([IsAuthenticated])
     def delete(self, request, pk):
         comment = get_object_or_404(Comment, pk=pk)
-        comment.delete()
-        return Response({"msg":"deleted"})
+        if request.user == comment.user:
+            comment.delete()
+            return Response({"msg":"deleted"})
+        else :
+            return Response({"msg": "401 unAuthorized 잘못된 접근입니다."})
 
 class Like(APIView):
     def get(self, request, pk):
