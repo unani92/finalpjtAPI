@@ -108,7 +108,7 @@ class ArticleDetail(APIView):
     def put(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
 
-        if request.user == article.user:
+        if request.user.username == article.user.username:
             prev_rank = article.rank
             serializer = ArticleSerializer(article, data=request.data)
             if serializer.is_valid(raise_exception=True):
