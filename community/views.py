@@ -121,7 +121,11 @@ class ArticleDetail(APIView):
             else :
                 return Response({"msg":"error"})
         else :
-            return Response({"msg":"401 unAuthorized 잘못된 접근입니다."})
+            return Response({
+                "msg":"401 unAuthorized 잘못된 접근입니다.",
+                "articleUser": article.user.username,
+                "requestUser": request.user.username
+            })
 
     @permission_classes([IsAuthenticated])
     def delete(self, request, pk):
