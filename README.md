@@ -43,10 +43,10 @@ $ python manage.py loaddata data/moviedata.json
 ## Model
 ![KakaoTalk_Photo_2020-06-11-16-11-17](https://user-images.githubusercontent.com/53211781/84362975-03ffcb80-ac09-11ea-92cd-13c5ee787be9.png)
 
-## API Guide
-### 1. 전체 영화 조회하기 `GET` `/api/v1/community/movies/`
-> id(영화 고유 personal key), genre, title, overview, poster_url, release_date
-> 
+### API Guide
+#### 1. 전체 영화 조회하기 `GET` `/api/v1/community/movies/`
+- default : 영화의 pk 순서대로 10개의 영화가 출력됩니다. 
+- pagination : 
 
 ### 2. 개별 영화 조회하기 `GET` `/api/v1/community/movies/<int:movie_pk>/`
 

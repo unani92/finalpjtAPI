@@ -31,7 +31,7 @@ class MovieListPaginate(APIView):
             serializer = MovieArticleSerializer(movies, many=True)
             return Response(serializer.data)
         else :
-            return Response({"message": "no result"})
+            movies = Movie.objects.all()
 
         result_page = paginator.paginate_queryset(movies,request)
         serializer = MovieArticleSerializer(result_page, many=True)
